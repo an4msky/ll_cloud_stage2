@@ -42,19 +42,6 @@ RUN cp -r storage storage.template
 
 RUN yarn migrate
 
-ENV XAPI_SVC_TAG=v2.4.0
-RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
-    && cd /opt/xapi-service #\
-#    && git checkout $XAPI_SVC_TAG
-COPY .env_xapi /opt/xapi-service/.env
-WORKDIR /opt/xapi-service
-RUN npm install
-RUN npm run build
-
-
-EXPOSE 3000 8080 8081
-
-
 RUN node cli/dist/server createSiteAdmin "example@example.ru" "Example" "Qwerty123"
 
 RUN yum -y install nginx
@@ -65,7 +52,16 @@ COPY learninglocker.conf /etc/nginx/sites-available/learninglocker.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enabled/learninglocker.conf
 
+ENV XAPI_SVC_TAG=v2.4.0
+RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
+    && cd /opt/xapi-service #\
+#    && git checkout $XAPI_SVC_TAG
+COPY .env_xapi /opt/xapi-service/.env
+WORKDIR /opt/xapi-service
+RUN npm install
+RUN npm run build
 
+EXPOSE 3000 8080 8081
 
 RUN yum -y install sudo
 
