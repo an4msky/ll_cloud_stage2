@@ -40,7 +40,18 @@ RUN yarn install \
 
 RUN cp -r storage storage.template
 
-EXPOSE 3000 8080
+
+ENV XAPI_SVC_TAG=v2.4.0
+RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
+    && cd /opt/xapi-service \
+    && git checkout $XAPI_SVC_TAG
+COPY .env_xapi /opt/xapi-service/.env
+WORKDIR opt/xapi-service
+RUN npm install
+RUN npm run build
+
+
+EXPOSE 3000 8080 8081
 
 RUN yarn migrate
 
@@ -54,6 +65,8 @@ COPY learninglocker.conf /etc/nginx/sites-available/learninglocker.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enabled/learninglocker.conf
 
+
+
 RUN yum -y install sudo
 
 #RUN adduser docker
@@ -62,6 +75,8 @@ RUN yum -y install sudo
 
 #USER docker
 
+CMD ["/usr/sbin/init"]
+
 CMD /bin/bash pm2 start pm2/all.json
 
-CMD ["/usr/sbin/init"]
+
