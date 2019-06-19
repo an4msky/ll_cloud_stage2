@@ -46,7 +46,7 @@ RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-servi
     && cd /opt/xapi-service \
     && git checkout $XAPI_SVC_TAG
 COPY .env_xapi /opt/xapi-service/.env
-WORKDIR opt/xapi-service
+WORKDIR /opt/xapi-service
 RUN npm install
 RUN npm run build
 
@@ -77,6 +77,10 @@ RUN yum -y install sudo
 
 CMD ["/usr/sbin/init"]
 
+WORKDIR /opt/learninglocker
 CMD /bin/bash pm2 start pm2/all.json
+
+WORKDIR /opt/xapi-service
+CMD /bin/bash pm2 start pm2/xapi.json
 
 
