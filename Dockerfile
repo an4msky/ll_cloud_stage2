@@ -56,11 +56,11 @@ RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enable
 
 RUN yum -y install sudo
 
-RUN adduser docker
-RUN passwd -d docker
-RUN usermod -aG wheel docker
+#RUN adduser docker
+#RUN passwd -d docker
+#RUN usermod -aG wheel docker
 
-USER docker
+#USER docker
 
 CMD /bin/bash pm2 start pm2/all.json
 
