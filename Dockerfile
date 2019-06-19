@@ -40,6 +40,7 @@ RUN yarn install \
 
 RUN cp -r storage storage.template
 
+RUN yarn migrate
 
 ENV XAPI_SVC_TAG=v2.4.0
 RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
@@ -53,7 +54,6 @@ RUN npm run build
 
 EXPOSE 3000 8080 8081
 
-RUN yarn migrate
 
 RUN node cli/dist/server createSiteAdmin "example@example.ru" "Example" "Qwerty123"
 
