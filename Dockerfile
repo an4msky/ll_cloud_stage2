@@ -65,14 +65,17 @@ EXPOSE 80 8333 3000 8080 8081
 
 RUN yum -y install sudo
 
-#RUN adduser docker
-#RUN passwd -d docker
-#RUN usermod -aG wheel docker
+RUN adduser docker
+RUN passwd -d docker
+RUN usermod -aG wheel docker
 
-#USER docker
+RUN mkdir /.pm2
+RUN chown -R docker:wheel/.pm2
+
+USER docker
 
 #CMD ["/usr/sbin/init"]
-RUN mkdir /.pm2
+
 
 WORKDIR /opt/learninglocker
 CMD /usr/bin/pm2 start pm2/all.json
