@@ -72,7 +72,7 @@ RUN yum -y install sudo
 #USER docker
 
 #CMD ["/usr/sbin/init"]
-RUN mkdirv /.pm2
+RUN mkdir /.pm2
 
 WORKDIR /opt/learninglocker
 CMD /usr/bin/pm2 start pm2/all.json
