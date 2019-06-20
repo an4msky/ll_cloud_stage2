@@ -70,7 +70,7 @@ RUN passwd -d docker
 RUN usermod -aG wheel docker
 
 RUN mkdir /.pm2
-RUN chown -R docker:wheel/.pm2
+RUN chown -R docker:wheel /.pm2
 
 USER docker
 
