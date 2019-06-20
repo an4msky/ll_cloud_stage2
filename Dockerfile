@@ -70,18 +70,17 @@ RUN passwd -d docker
 RUN usermod -aG wheel docker
 RUN usermod -d /opt/home/docker docker
 
+ENV HOME=/opt/home/docker
+
 RUN mkdir /.pm2
 RUN chown -R docker:wheel /.pm2
 
-USER docker
-
 #CMD ["/usr/sbin/init"]
 
+COPY start_llr.sh /opt/learninglocker/start_llr.sh
+RUN chmod +x /opt/learninglocker/start_llr.sh
 
-WORKDIR /opt/learninglocker
-CMD /usr/bin/pm2 start pm2/all.json
-
-WORKDIR /opt/xapi-service
-CMD /usr/bin/pm2 start pm2/xapi.json
-
+USER docker
+RUN env
+ENTRYPOINT /opt/learninglocker/start_llr.sh
 
