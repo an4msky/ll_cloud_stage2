@@ -68,6 +68,7 @@ RUN yum -y install sudo
 RUN adduser docker
 RUN passwd -d docker
 RUN usermod -aG wheel docker
+RUN usermod -d /opt/home/docker docker
 
 RUN mkdir /.pm2
 RUN chown -R docker:wheel /.pm2
