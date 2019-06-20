@@ -71,12 +71,12 @@ RUN yum -y install sudo
 
 #USER docker
 
-CMD ["/usr/sbin/init"]
+#CMD ["/usr/sbin/init"]
 
 WORKDIR /opt/learninglocker
-CMD /bin/bash pm2 start pm2/all.json
+CMD /bin/bash /usr/bin/pm2 start pm2/all.json
 
 WORKDIR /opt/xapi-service
-CMD /bin/bash pm2 start pm2/xapi.json
+CMD /bin/bash /usr/bin/pm2 start pm2/xapi.json
 
 
