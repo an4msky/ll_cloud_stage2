@@ -16,7 +16,7 @@ RUN yum -y install \
 RUN yum -y install epel-release yum-utils
 RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum-config-manager --enable remi
-RUN yum install -y redis
+#RUN yum install -y redis
 
 RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 RUN yum install -y nodejs
@@ -24,6 +24,7 @@ RUN yum install -y nodejs
 RUN npm install -g yarn
 RUN npm install -g pm2
 RUN pm2 install pm2-logrotate
+RUN pm2 set pm2-logrotate:compress true
 
 ENV LL_TAG=v2.8.2
 RUN git clone https://github.com/LearningLocker/learninglocker.git /opt/learninglocker \
@@ -37,20 +38,11 @@ COPY .env .env
 RUN yarn install \
     && yarn build-all
 
-
-RUN cp -r storage storage.template
+	RUN cp -r storage storage.template
 
 RUN yarn migrate
 
 RUN node cli/dist/server createSiteAdmin "example@example.ru" "Example" "Qwerty123"
-
-RUN yum -y install nginx
-
-RUN mkdir /etc/nginx/sites-available
-RUN mkdir /etc/nginx/sites-enabled
-COPY learninglocker.conf /etc/nginx/sites-available/learninglocker.conf
-COPY nginx.conf /etc/nginx/nginx.conf
-RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enabled/learninglocker.conf
 
 ENV XAPI_SVC_TAG=v2.4.0
 RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
@@ -61,7 +53,15 @@ WORKDIR /opt/xapi-service
 RUN npm install
 RUN npm run build
 
-EXPOSE 3000 8080 8081
+RUN yum -y install nginx
+
+RUN mkdir /etc/nginx/sites-available
+RUN mkdir /etc/nginx/sites-enabled
+COPY learninglocker.conf /etc/nginx/sites-available/learninglocker.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enabled/learninglocker.conf
+
+EXPOSE 80 8333 3000 8080 8081
 
 RUN yum -y install sudo
 
@@ -72,11 +72,12 @@ RUN yum -y install sudo
 #USER docker
 
 #CMD ["/usr/sbin/init"]
+RUN mkdirv /.pm2
 
 WORKDIR /opt/learninglocker
-CMD /bin/bash /usr/bin/pm2 start pm2/all.json
+CMD /usr/bin/pm2 start pm2/all.json
 
 WORKDIR /opt/xapi-service
-CMD /bin/bash /usr/bin/pm2 start pm2/xapi.json
+CMD /usr/bin/pm2 start pm2/xapi.json
 
 
