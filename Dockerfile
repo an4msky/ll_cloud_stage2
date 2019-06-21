@@ -18,6 +18,9 @@ RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum-config-manager --enable remi
 #RUN yum install -y redis
 
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
 RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 RUN yum install -y nodejs
 
@@ -80,7 +83,7 @@ RUN chown -R docker:wheel /.pm2
 COPY start_llr.sh /opt/learninglocker/start_llr.sh
 RUN chmod +x /opt/learninglocker/start_llr.sh
 
-USER docker
+#USER docker
 RUN env
 ENTRYPOINT /opt/learninglocker/start_llr.sh
 
