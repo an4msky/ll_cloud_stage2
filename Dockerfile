@@ -66,24 +66,5 @@ RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enable
 
 EXPOSE 80 8333 3000 8080 8081
 
-RUN yum -y install sudo
-
-RUN adduser docker
-RUN passwd -d docker
-RUN usermod -aG wheel docker
-RUN usermod -d /opt/home/docker docker
-
-ENV HOME=/opt/home/docker
-
-RUN mkdir /.pm2
-RUN chown -R docker:wheel /.pm2
-
-#CMD ["/usr/sbin/init"]
-
-COPY start_llr.sh /opt/learninglocker/start_llr.sh
-RUN chmod +x /opt/learninglocker/start_llr.sh
-
-#USER docker
-RUN env
-ENTRYPOINT /opt/learninglocker/start_llr.sh
+CMD ["env"]
 
