@@ -50,7 +50,7 @@ RUN yarn migrate
 #ENV XAPI_SVC_TAG=v2.4.0
 RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
     && cd /opt/xapi-service #\
-    && git checkout $XAPI_SVC_TAG
+#    && git checkout $XAPI_SVC_TAG
 COPY .env_xapi /opt/xapi-service/.env
 WORKDIR /opt/xapi-service
 RUN npm install
