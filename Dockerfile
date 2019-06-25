@@ -45,7 +45,7 @@ RUN cp -r storage storage.template
 
 RUN yarn migrate
 
-#RUN node cli/dist/server createSiteAdmin "example@example.ru" "Example" "Qwerty123"
+RUN node cli/dist/server createSiteAdmin "example@example.ru" "Example" "Qwerty123"
 
 #ENV XAPI_SVC_TAG=v2.4.0
 #RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
@@ -69,3 +69,4 @@ EXPOSE 3000 8080 8081
 
 #CMD ["env"]
 
+CMD ['pm2-docker', 'pm2/all.json']
