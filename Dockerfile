@@ -29,32 +29,32 @@ RUN npm install -g pm2
 RUN pm2 install pm2-logrotate
 # RUN pm2 set pm2-logrotate:compress true
 
-#ENV LL_TAG=v2.8.2
-#RUN git clone https://github.com/LearningLocker/learninglocker.git /opt/learninglocker \
-#    && cd /opt/learninglocker \
-#    && git checkout $LL_TAG
+ENV LL_TAG=v2.8.2
+RUN git clone https://github.com/LearningLocker/learninglocker.git /opt/learninglocker \
+    && cd /opt/learninglocker \
+    && git checkout $LL_TAG
 
-#WORKDIR /opt/learninglocker
+WORKDIR /opt/learninglocker
 
-#COPY .env .env
+COPY .env .env
 
-#RUN yarn install \
-#    && yarn build-all
+RUN yarn install \
+    && yarn build-all
 
-#RUN cp -r storage storage.template
+RUN cp -r storage storage.template
 
-#RUN yarn migrate
+RUN yarn migrate
 
 #RUN node cli/dist/server createSiteAdmin "example@example.ru" "Example" "Qwerty123"
 
-#ENV XAPI_SVC_TAG=v2.4.0
-#RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
-#    && cd /opt/xapi-service #\
+ENV XAPI_SVC_TAG=v2.4.0
+RUN git clone https://github.com/LearningLocker/xapi-service.git /opt/xapi-service \
+    && cd /opt/xapi-service #\
 #    && git checkout $XAPI_SVC_TAG
-#COPY .env_xapi /opt/xapi-service/.env
-#WORKDIR /opt/xapi-service
-#RUN npm install
-#RUN npm run build
+COPY .env_xapi /opt/xapi-service/.env
+WORKDIR /opt/xapi-service
+RUN npm install
+RUN npm run build
 
 #RUN yum -y install nginx
 
