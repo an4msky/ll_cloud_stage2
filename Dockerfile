@@ -56,7 +56,7 @@ WORKDIR /opt/xapi-service
 RUN npm install
 RUN npm run build
 
-#RUN yum -y install nginx
+RUN yum -y install nginx
 
 RUN mkdir /etc/nginx/sites-available
 RUN mkdir /etc/nginx/sites-enabled
@@ -64,8 +64,8 @@ COPY learninglocker.conf /etc/nginx/sites-available/learninglocker.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN ln -s /etc/nginx/sites-available/learninglocker.conf /etc/nginx/sites-enabled/learninglocker.conf
 
-#EXPOSE 80 8333 3000 8080 8081
-EXPOSE 3000 8080 8081
+EXPOSE 80 8333 3000 8080 8081
+#EXPOSE 3000 8080 8081
 
 #CMD ["env"]
 
